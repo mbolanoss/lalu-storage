@@ -11,6 +11,7 @@ import (
 func UploadFile(ctx *fiber.Ctx, path string) error {
 
 	fileHeader, err := ctx.FormFile("file")
+
 	if err != nil {
 		return ctx.Status(http.StatusBadRequest).SendString("Error while parsing file")
 	}
@@ -40,5 +41,20 @@ func UpdateFile(ctx *fiber.Ctx, path string) error {
 }
 
 func DeleteFile(ctx *fiber.Ctx, path string) error {
+	
+	var err error
+
+	fileName := ctx.Query("fileName")
+	if fileName == "" {
+		return ctx.Status(http.StatusBadRequest).SendString("File name not found in query params")
+	}
+
+	err = helpers.Uploader.DeleteFile(fileName, path)
+	
+	if err != nil {
+		return ctx.Status(http.StatusBadRequest).SendString("Error while deleting file in GCS")
+		
+	}
+
 	return ctx.SendStatus(http.StatusOK)
 }

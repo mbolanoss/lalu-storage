@@ -38,3 +38,22 @@ func (c *ClientUploader) UploadFile(file multipart.File, object string, uploadPa
 
 	return nil
 }
+
+func (c *ClientUploader) DeleteFile(object string, deletePath string) error {
+	c.WorkingPath = deletePath
+
+	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(ctx, time.Second*30)
+	defer cancel()
+	
+	o := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + object)
+	
+	err := o.Delete(ctx)
+	
+	if err != nil {
+		return fmt.Errorf("error while deleting file")
+	}
+	
+	return nil
+}
