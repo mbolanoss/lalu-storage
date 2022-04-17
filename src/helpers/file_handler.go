@@ -20,7 +20,7 @@ type ClientUploader struct {
 
 var Uploader *ClientUploader
 
-func (c *ClientUploader) UploadFile(file multipart.File, object string, uploadPath string) error {
+func (c *ClientUploader) UploadFile(file multipart.File, fileName string, uploadPath string) error {
 	c.WorkingPath = uploadPath
 	
 	ctx := context.Background()
@@ -28,7 +28,7 @@ func (c *ClientUploader) UploadFile(file multipart.File, object string, uploadPa
 	ctx, cancel := context.WithTimeout(ctx, time.Second*30)
 	defer cancel()
 
-	writer := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + object).NewWriter(ctx)
+	writer := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + fileName).NewWriter(ctx)
 
 	if _, err := io.Copy(writer, file); err != nil {
 		return fmt.Errorf("error while copying file to object handler")
@@ -40,7 +40,7 @@ func (c *ClientUploader) UploadFile(file multipart.File, object string, uploadPa
 	return nil
 }
 
-func (c *ClientUploader) DeleteFile(object string, deletePath string) error {
+func (c *ClientUploader) DeleteFile(fileName string, deletePath string) error {
 	c.WorkingPath = deletePath
 
 	ctx := context.Background()
@@ -48,7 +48,7 @@ func (c *ClientUploader) DeleteFile(object string, deletePath string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*30)
 	defer cancel()
 	
-	o := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + object)
+	o := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + fileName)
 	
 	err := o.Delete(ctx)
 	
