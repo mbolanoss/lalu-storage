@@ -30,7 +30,7 @@ func init(){
 		panic("Error loading .env file")
 	}
 
-	GCSCredentials := os.Getenv("LOCAL_GCS_CREDENTIALS")
+	GCSCredentials := os.Getenv("GCS_CREDENTIALS")
 
 	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", GCSCredentials) // FILL IN WITH YOUR FILE PATH
 	client, err := storage.NewClient(context.Background())
