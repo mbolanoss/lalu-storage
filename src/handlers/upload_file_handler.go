@@ -33,7 +33,20 @@ func UploadFile(ctx *fiber.Ctx, path string) error {
 }
 
 func FetchFile(ctx *fiber.Ctx, path string) error {
-	return ctx.SendStatus(http.StatusOK)
+
+	fileName := ctx.Query("fileName")
+
+	if fileName == "" {
+		return ctx.Status(http.StatusBadRequest).SendString("No file name query param found")
+	}
+	
+	file, err := helpers.Uploader.FetchFile(fileName, path)
+	
+	if err != nil {
+		return ctx.Status(http.StatusInternalServerError).SendString("Error fetching file from GCS")
+	}
+
+	return ctx.Send(file)
 }
 
 func DeleteFile(ctx *fiber.Ctx, path string) error {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"time"
 
@@ -56,4 +57,25 @@ func (c *ClientUploader) DeleteFile(object string, deletePath string) error {
 	}
 	
 	return nil
+}
+
+func (c *ClientUploader) FetchFile(fileName string, fetchPath string) ([]byte, error) {
+	c.WorkingPath = fetchPath
+
+	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(ctx, time.Second*50)
+	defer cancel()
+
+	rc, err := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + fileName).NewReader(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("error while creating file reader")
+	}
+	defer rc.Close()
+
+	data, err := ioutil.ReadAll(rc)
+	if err != nil {
+		return nil, fmt.Errorf("error while reading file data")
+	}
+	return data, nil
 }
