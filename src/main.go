@@ -51,7 +51,7 @@ func setupRoutes(app *fiber.App){
 	})
 
 	app.Put("/songs", func(ctx *fiber.Ctx) error {
-		return handlers.UpdateFile(ctx, songsDirPath)
+		return handlers.UploadFile(ctx, songsDirPath)
 	})
 
 	app.Delete("/songs", func(ctx *fiber.Ctx) error {
@@ -68,7 +68,7 @@ func setupRoutes(app *fiber.App){
 	})
 
 	app.Put("/album-covers", func(ctx *fiber.Ctx) error {
-		return handlers.UpdateFile(ctx, albumCoversDirPath)
+		return handlers.UploadFile(ctx, albumCoversDirPath)
 	})
 
 	app.Delete("/album-covers", func(ctx *fiber.Ctx) error {
@@ -85,7 +85,7 @@ func setupRoutes(app *fiber.App){
 	})
 
 	app.Put("/playlists-covers", func(ctx *fiber.Ctx) error {
-		return handlers.UpdateFile(ctx, playlistCoversDirPath)
+		return handlers.UploadFile(ctx, playlistCoversDirPath)
 	})
 
 	app.Delete("/playlists-covers", func(ctx *fiber.Ctx) error {
@@ -102,7 +102,7 @@ func setupRoutes(app *fiber.App){
 	})
 
 	app.Put("/profile-pics", func(ctx *fiber.Ctx) error {
-		return handlers.UpdateFile(ctx, profilePicsDirPath)
+		return handlers.UploadFile(ctx, profilePicsDirPath)
 	})
 
 	app.Delete("/profile-pics", func(ctx *fiber.Ctx) error {
@@ -119,7 +119,7 @@ func setupRoutes(app *fiber.App){
 	})
 
 	app.Put("/event-pics", func(ctx *fiber.Ctx) error {
-		return handlers.UpdateFile(ctx, eventPicsDirPath)
+		return handlers.UploadFile(ctx, eventPicsDirPath)
 	})
 
 	app.Delete("/event-pics", func(ctx *fiber.Ctx) error {

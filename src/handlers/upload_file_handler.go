@@ -36,10 +36,6 @@ func FetchFile(ctx *fiber.Ctx, path string) error {
 	return ctx.SendStatus(http.StatusOK)
 }
 
-func UpdateFile(ctx *fiber.Ctx, path string) error {
-	return ctx.SendStatus(http.StatusOK)
-}
-
 func DeleteFile(ctx *fiber.Ctx, path string) error {
 	
 	var err error
