@@ -6,6 +6,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 
 	"lalu-storage/handlers"
 	"lalu-storage/helpers"
@@ -24,7 +25,14 @@ const (
 )
 
 func init(){
-	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "/home/miguel/Universidad/Arquisoft/Proyecto/lalu-storage/src/lalu-storage-b7d06ebc57b0.json") // FILL IN WITH YOUR FILE PATH
+	err := godotenv.Load()
+	if err != nil {
+		panic("Error loading .env file")
+	}
+
+	GCSCredentials := os.Getenv("LOCAL_GCS_CREDENTIALS")
+
+	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", GCSCredentials) // FILL IN WITH YOUR FILE PATH
 	client, err := storage.NewClient(context.Background())
 
 	if err != nil {
