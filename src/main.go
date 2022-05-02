@@ -137,7 +137,7 @@ func main(){
 	
 	setupRoutes(app)
 	
-	go app.Listen(":4000")
+	go app.Listen(":3000")
 
 	// RabbitMQ config
 	channel := config.RabbitMQConn()
