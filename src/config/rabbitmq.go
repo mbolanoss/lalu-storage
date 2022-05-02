@@ -2,12 +2,20 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/streadway/amqp"
 )
 
 func RabbitMQConn() *amqp.Channel{
-	conn, err := amqp.Dial("amqp://lalu_mq:lalu_mq@localhost:5672/")
+
+	user := os.Getenv("MQ_USER")
+	password := os.Getenv("MQ_PASSWORD")
+	host := os.Getenv("MQ_HOST")
+
+	rabbitMQUrl := fmt.Sprintf("amqp://%s:%s@%s:5672/", user, password, host)
+
+	conn, err := amqp.Dial(rabbitMQUrl)
 
 	if err != nil {
 		panic("Error conecting to rabbitmq")
