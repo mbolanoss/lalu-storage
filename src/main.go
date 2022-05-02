@@ -55,10 +55,6 @@ func setupRoutes(app *fiber.App){
 		return handlers.FetchFile(ctx, songsDirPath)
 	})
 
-	app.Post("/songs", func(ctx *fiber.Ctx) error {
-		return handlers.UploadFile(ctx, songsDirPath)
-	})
-
 	app.Put("/songs", func(ctx *fiber.Ctx) error {
 		return handlers.UploadFile(ctx, songsDirPath)
 	})
