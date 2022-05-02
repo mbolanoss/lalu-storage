@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 
+	"lalu-storage/config"
 	"lalu-storage/handlers"
 	"lalu-storage/helpers"
 )
@@ -136,10 +137,13 @@ func setupRoutes(app *fiber.App){
 }
 
 func main(){
+	// RabbitMQ config
+	channel := config.RabbitMQConn()
+	handlers.DequeueSongs(channel)
 	
 	app := fiber.New()
 	
 	setupRoutes(app)
-
+	
 	app.Listen(":3000")
 }

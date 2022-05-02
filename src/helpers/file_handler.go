@@ -1,6 +1,8 @@
 package helpers
 
 import (
+	"bufio"
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -31,6 +33,33 @@ func (c *ClientUploader) UploadFile(file multipart.File, fileName string, upload
 	writer := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + fileName).NewWriter(ctx)
 
 	if _, err := io.Copy(writer, file); err != nil {
+		return fmt.Errorf("error while copying file to object handler")
+	}
+	if err := writer.Close(); err != nil {
+		return fmt.Errorf("error closing object handler")
+	}
+
+	return nil
+}
+
+func (c *ClientUploader) UploadSongFromQueue(songData []byte, fileName string) error {
+	c.WorkingPath = "songs/"
+	
+	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(ctx, time.Second*30)
+	defer cancel()
+
+	writer := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + fileName).NewWriter(ctx)
+
+
+
+	fmt.Println("1")
+	buff := bytes.NewBuffer(songData)
+	bufio.NewWriter(buff)
+	fmt.Println("2")
+
+	if _, err := io.Copy(writer, buff); err != nil {
 		return fmt.Errorf("error while copying file to object handler")
 	}
 	if err := writer.Close(); err != nil {
