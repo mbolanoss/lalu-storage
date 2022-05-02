@@ -52,12 +52,8 @@ func (c *ClientUploader) UploadSongFromQueue(songData []byte, fileName string) e
 
 	writer := c.Cl.Bucket(c.BucketName).Object(c.WorkingPath + fileName).NewWriter(ctx)
 
-
-
-	fmt.Println("1")
 	buff := bytes.NewBuffer(songData)
 	bufio.NewWriter(buff)
-	fmt.Println("2")
 
 	if _, err := io.Copy(writer, buff); err != nil {
 		return fmt.Errorf("error while copying file to object handler")

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"lalu-storage/helpers"
 
 	"github.com/streadway/amqp"
@@ -9,7 +9,7 @@ import (
 
 type SongData struct {
 	Name string `json:"name"`
-	Data map[string]interface {} `json:"data"`
+	Data map[string] []byte `json:"data"`
 }
 
 func DequeueSongs (channel *amqp.Channel) {
@@ -45,19 +45,10 @@ func DequeueSongs (channel *amqp.Channel) {
 	go func (){
 		for song := range songs {
 
-			/* var songData SongData
+			var songData SongData
 
-			err := json.Unmarshal(song.Body, &songData) */
-
-			if err != nil {
-				fmt.Println(err)
-			}
-
-			/* bytesStr := fmt.Sprintf("%v", songData.Data["data"])
-			songBytes := []byte(bytesStr)
-			fmt.Println(songData.Data["data"])
-			fmt.Println(songBytes) */
-			helpers.Uploader.UploadSongFromQueue(song.Body, "prueba.txt")
+			json.Unmarshal(song.Body, &songData)
+			helpers.Uploader.UploadSongFromQueue(songData.Data["data"], songData.Name)
 		}
 	}()
 
