@@ -137,13 +137,14 @@ func setupRoutes(app *fiber.App){
 }
 
 func main(){
-	// RabbitMQ config
-	channel := config.RabbitMQConn()
-	handlers.DequeueSongs(channel)
-	
 	app := fiber.New()
 	
 	setupRoutes(app)
 	
-	app.Listen(":3000")
+	go app.Listen(":3000")
+
+	// RabbitMQ config
+	channel := config.RabbitMQConn()
+	handlers.DequeueSongs(channel)
+	
 }
