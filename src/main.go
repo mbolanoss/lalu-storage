@@ -133,7 +133,9 @@ func setupRoutes(app *fiber.App){
 }
 
 func main(){
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		BodyLimit: 15 * 1024 * 1024,
+	})
 	
 	setupRoutes(app)
 	
